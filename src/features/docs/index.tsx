@@ -5,7 +5,7 @@ import { Link } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://5wtjwfacdi.us-east-1.awsapprunner.com'
 
 interface PriceData {
   provider: string
@@ -139,7 +139,7 @@ export function Docs() {
   }, {} as Record<string, PriceData[]>)
 
   const exampleCode = {
-    curl: `curl -X POST https://api.llmcostradar.com/track-llm \\
+    curl: `curl -X POST ${API_BASE_URL}/track-llm \\
   -H "x-api-key: YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -151,7 +151,7 @@ export function Docs() {
     "tags": ["production", "user-request"]
   }'`,
     
-    javascript: `const response = await fetch('https://api.llmcostradar.com/track-llm', {
+    javascript: `const response = await fetch('${API_BASE_URL}/track-llm', {
   method: 'POST',
   headers: {
     'x-api-key': 'YOUR_API_KEY',
@@ -173,7 +173,7 @@ console.log(data);`,
     python: `import requests
 
 response = requests.post(
-    'https://api.llmcostradar.com/track-llm',
+    '${API_BASE_URL}/track-llm',
     headers={
         'x-api-key': 'YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -210,7 +210,7 @@ func main() {
     
     jsonData, _ := json.Marshal(payload)
     
-    req, _ := http.NewRequest("POST", "https://api.llmcostradar.com/track-llm", bytes.NewBuffer(jsonData))
+    req, _ := http.NewRequest("POST", "${API_BASE_URL}/track-llm", bytes.NewBuffer(jsonData))
     req.Header.Set("x-api-key", "YOUR_API_KEY")
     req.Header.Set("Content-Type", "application/json")
     
@@ -380,7 +380,7 @@ func main() {
               
               <div className='space-y-4'>
                 <h3 className='text-lg font-medium'>Exemplo de requisição autenticada</h3>
-                <CodeBlock code={`curl -X POST https://api.llmcostradar.com/track-llm \\
+                <CodeBlock code={`curl -X POST ${API_BASE_URL}/track-llm \\
   -H "x-api-key: YOUR_API_KEY" \\
   -H "Content-Type: application/json"`} />
               </div>
