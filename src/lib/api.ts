@@ -2,7 +2,7 @@ import axios, { type AxiosInstance, type AxiosError } from 'axios'
 import { useAuthStore } from '@/stores/auth-store'
 
 // Base URL da API - pode ser configurada via variável de ambiente
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://5wtjwfacdi.us-east-1.awsapprunner.com'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.llmcostradar.com'
 
 // Criar instância do axios
 const api: AxiosInstance = axios.create({

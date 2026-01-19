@@ -11,7 +11,7 @@ import { createApiKey } from '@/lib/api-keys-api'
 import { checkIsFirstEvent } from '@/lib/track-llm-api'
 import { cn } from '@/lib/utils'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://5wtjwfacdi.us-east-1.awsapprunner.com'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.llmcostradar.com'
 
 type Step = 1 | 2 | 3
 

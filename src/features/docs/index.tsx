@@ -5,7 +5,7 @@ import { Link } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://5wtjwfacdi.us-east-1.awsapprunner.com'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.llmcostradar.com'
 
 interface PriceData {
   provider: string

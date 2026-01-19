@@ -67,7 +67,7 @@ export function ApiKeysActionDialog({
   const [copiedCurl, setCopiedCurl] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://5wtjwfacdi.us-east-1.awsapprunner.com'
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.llmcostradar.com'
 
   const createForm = useForm<CreateFormValues>({
     resolver: zodResolver(createFormSchema),
