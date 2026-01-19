@@ -46,8 +46,6 @@ export function Budgets() {
         <Header fixed>
           <Search />
           <div className='ms-auto flex items-center space-x-4'>
-            <ThemeSwitch />
-            <ConfigDrawer />
             <ProfileDropdown />
           </div>
         </Header>
@@ -66,8 +64,6 @@ export function Budgets() {
         <Header fixed>
           <Search />
           <div className='ms-auto flex items-center space-x-4'>
-            <ThemeSwitch />
-            <ConfigDrawer />
             <ProfileDropdown />
           </div>
         </Header>
@@ -120,7 +116,7 @@ export function Budgets() {
           <BudgetsTable
             data={budgets}
             search={search as Record<string, unknown>}
-            navigate={navigate}
+            navigate={navigate as any}
           />
         )}
 

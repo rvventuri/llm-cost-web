@@ -10,8 +10,7 @@ import { ApiKeysDialogs } from './components/api-keys-dialogs'
 import { ApiKeysPrimaryButtons } from './components/api-keys-primary-buttons'
 import { ApiKeysProvider } from './components/api-keys-provider'
 import { ApiKeysTable } from './components/api-keys-table'
-import { listApiKeys } from '@/lib/api-keys-api'
-import type { ApiKey } from '@/lib/api-keys-api'
+import { listApiKeys, type ApiKey } from '@/lib/api-keys-api'
 
 const route = getRouteApi('/_authenticated/api-keys/')
 

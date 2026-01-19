@@ -82,7 +82,7 @@ export function SignUpForm({
         // Se existir API key, redirecionar para dashboard, senão para onboarding
         const targetPath = hasApiKeys ? '/dashboard-llm' : '/onboarding'
         navigate({ to: targetPath, replace: true })
-      } catch (error) {
+      } catch {
         // Se houver erro ao buscar API keys (provavelmente porque é novo usuário), redirecionar para onboarding
         navigate({ to: '/onboarding', replace: true })
       }

@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
 import { Copy, Check, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -28,13 +27,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import type { ApiKey } from '@/lib/api-keys-api'
 import {
   createApiKey,
   updateApiKey,
+  type ApiKey,
   type CreateApiKeyResponse,
 } from '@/lib/api-keys-api'
-import { cn } from '@/lib/utils'
 
 const createFormSchema = z.object({
   name: z.string().optional(),
@@ -94,8 +92,6 @@ export function ApiKeysActionDialog({
         },
   })
 
-  const form = isEdit ? updateForm : createForm
-
   const onSubmit = async (values: CreateFormValues | UpdateFormValues) => {
     setIsLoading(true)
     try {
@@ -107,7 +103,7 @@ export function ApiKeysActionDialog({
           expiresAt: updateValues.expiresAt === '' ? null : updateValues.expiresAt || undefined,
         })
         toast.success('API key atualizada com sucesso!')
-        form.reset()
+        updateForm.reset()
         onOpenChange(false)
         onSuccess()
       } else {
@@ -164,7 +160,11 @@ export function ApiKeysActionDialog({
   }
 
   const handleClose = () => {
-    form.reset()
+    if (isEdit) {
+      updateForm.reset()
+    } else {
+      createForm.reset()
+    }
     setCreatedApiKey(null)
     setCopied(false)
     setCopiedCurl(false)
@@ -263,32 +263,32 @@ export function ApiKeysActionDialog({
               : 'Crie uma nova API key para sua organização.'}
           </DialogDescription>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-            <FormField
-              control={form.control}
-              name='name'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome (opcional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder='Ex: API Key Produção'
-                      {...field}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Um nome descritivo para identificar esta API key.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {isEdit && (
+        {isEdit ? (
+          <Form {...updateForm}>
+            <form onSubmit={updateForm.handleSubmit(onSubmit)} className='space-y-4'>
               <FormField
-                control={form.control}
+                control={updateForm.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome (opcional)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Ex: API Key Produção'
+                        {...field}
+                        value={field.value || ''}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Um nome descritivo para identificar esta API key.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={updateForm.control}
                 name='isActive'
                 render={({ field }) => (
                   <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4'>
@@ -307,77 +307,162 @@ export function ApiKeysActionDialog({
                   </FormItem>
                 )}
               />
-            )}
 
-            <FormField
-              control={form.control}
-              name='expiresAt'
-              render={({ field }) => {
-                // Converter para formato datetime-local
-                const getValue = () => {
-                  if (!field.value) return ''
-                  try {
-                    const date = new Date(field.value)
-                    // Ajustar para timezone local
-                    const year = date.getFullYear()
-                    const month = String(date.getMonth() + 1).padStart(2, '0')
-                    const day = String(date.getDate()).padStart(2, '0')
-                    const hours = String(date.getHours()).padStart(2, '0')
-                    const minutes = String(date.getMinutes()).padStart(2, '0')
-                    return `${year}-${month}-${day}T${hours}:${minutes}`
-                  } catch {
-                    return ''
+              <FormField
+                control={updateForm.control}
+                name='expiresAt'
+                render={({ field }) => {
+                  // Converter para formato datetime-local
+                  const getValue = () => {
+                    if (!field.value) return ''
+                    try {
+                      const date = new Date(field.value)
+                      // Ajustar para timezone local
+                      const year = date.getFullYear()
+                      const month = String(date.getMonth() + 1).padStart(2, '0')
+                      const day = String(date.getDate()).padStart(2, '0')
+                      const hours = String(date.getHours()).padStart(2, '0')
+                      const minutes = String(date.getMinutes()).padStart(2, '0')
+                      return `${year}-${month}-${day}T${hours}:${minutes}`
+                    } catch {
+                      return ''
+                    }
                   }
-                }
 
-                return (
+                  return (
+                    <FormItem>
+                      <FormLabel>Data de Expiração (opcional)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type='datetime-local'
+                          value={getValue()}
+                          onChange={(e) => {
+                            const value = e.target.value
+                            if (value) {
+                              // Converter para ISO string
+                              const date = new Date(value)
+                              field.onChange(date.toISOString())
+                            } else {
+                              field.onChange(null)
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Deixe em branco para remover a data de expiração.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+
+              <DialogFooter>
+                <Button
+                  type='button'
+                  variant='outline'
+                  onClick={handleClose}
+                  disabled={isLoading}
+                >
+                  Cancelar
+                </Button>
+                <Button type='submit' disabled={isLoading}>
+                  {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+                  Salvar Alterações
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        ) : (
+          <Form {...createForm}>
+            <form onSubmit={createForm.handleSubmit(onSubmit)} className='space-y-4'>
+              <FormField
+                control={createForm.control}
+                name='name'
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      Data de Expiração {isEdit ? '(opcional)' : '(opcional)'}
-                    </FormLabel>
+                    <FormLabel>Nome (opcional)</FormLabel>
                     <FormControl>
                       <Input
-                        type='datetime-local'
-                        value={getValue()}
-                        onChange={(e) => {
-                          const value = e.target.value
-                          if (value) {
-                            // Converter para ISO string
-                            const date = new Date(value)
-                            field.onChange(date.toISOString())
-                          } else {
-                            field.onChange(isEdit ? null : undefined)
-                          }
-                        }}
+                        placeholder='Ex: API Key Produção'
+                        {...field}
+                        value={field.value || ''}
                       />
                     </FormControl>
                     <FormDescription>
-                      {isEdit
-                        ? 'Deixe em branco para remover a data de expiração.'
-                        : 'Deixe em branco para que a API key nunca expire.'}
+                      Um nome descritivo para identificar esta API key.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
-                )
-              }}
-            />
+                )}
+              />
 
-            <DialogFooter>
-              <Button
-                type='button'
-                variant='outline'
-                onClick={handleClose}
-                disabled={isLoading}
-              >
-                Cancelar
-              </Button>
-              <Button type='submit' disabled={isLoading}>
-                {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-                {isEdit ? 'Salvar Alterações' : 'Criar API Key'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+              <FormField
+                control={createForm.control}
+                name='expiresAt'
+                render={({ field }) => {
+                  // Converter para formato datetime-local
+                  const getValue = () => {
+                    if (!field.value) return ''
+                    try {
+                      const date = new Date(field.value)
+                      // Ajustar para timezone local
+                      const year = date.getFullYear()
+                      const month = String(date.getMonth() + 1).padStart(2, '0')
+                      const day = String(date.getDate()).padStart(2, '0')
+                      const hours = String(date.getHours()).padStart(2, '0')
+                      const minutes = String(date.getMinutes()).padStart(2, '0')
+                      return `${year}-${month}-${day}T${hours}:${minutes}`
+                    } catch {
+                      return ''
+                    }
+                  }
+
+                  return (
+                    <FormItem>
+                      <FormLabel>Data de Expiração (opcional)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type='datetime-local'
+                          value={getValue()}
+                          onChange={(e) => {
+                            const value = e.target.value
+                            if (value) {
+                              // Converter para ISO string
+                              const date = new Date(value)
+                              field.onChange(date.toISOString())
+                            } else {
+                              field.onChange(undefined)
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Deixe em branco para que a API key nunca expire.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+
+              <DialogFooter>
+                <Button
+                  type='button'
+                  variant='outline'
+                  onClick={handleClose}
+                  disabled={isLoading}
+                >
+                  Cancelar
+                </Button>
+                <Button type='submit' disabled={isLoading}>
+                  {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+                  Criar API Key
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        )}
       </DialogContent>
     </Dialog>
   )

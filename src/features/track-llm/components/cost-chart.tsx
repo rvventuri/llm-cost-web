@@ -80,7 +80,7 @@ export function CostChart({ events }: CostChartProps) {
               tickFormatter={(value) => `$${value.toFixed(6)}`}
             />
             <Tooltip
-              formatter={(value: number) => formatCurrency(value)}
+              formatter={(value: number | undefined) => value !== undefined ? formatCurrency(value) : ''}
               contentStyle={{
                 backgroundColor: 'hsl(var(--background))',
                 border: '1px solid hsl(var(--border))',

@@ -18,13 +18,13 @@ export function ApiKeysDialogs({ onRefresh }: ApiKeysDialogsProps) {
   return (
     <>
       <ApiKeysActionDialog
-        currentRow={open === 'edit' ? currentRow : undefined}
+        currentRow={open === 'edit' ? currentRow ?? undefined : undefined}
         open={open === 'create' || open === 'edit'}
         onOpenChange={(state) => !state && setOpen(null)}
         onSuccess={handleSuccess}
       />
       <ApiKeysDeleteDialog
-        currentRow={currentRow}
+        currentRow={currentRow ?? null}
         open={open === 'delete'}
         onOpenChange={(state) => !state && setOpen(null)}
         onSuccess={handleSuccess}

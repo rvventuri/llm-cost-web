@@ -73,49 +73,21 @@ export function Docs() {
         setLoadingPrices(true)
         setPricesError(null)
         const url = `${API_BASE_URL}/prices`
-        console.log('Fetching prices from:', url)
         const response = await fetch(url)
-        console.log('Response status:', response.status)
         
         if (!response.ok) {
           throw new Error(`Erro ao carregar preços: ${response.status} ${response.statusText}`)
         }
         
         const data: PricesResponse = await response.json()
-        console.log('Prices data:', data)
         
         if (data.success && data.data && Array.isArray(data.data)) {
           setPrices(data.data)
-          console.log(`Loaded ${data.data.length} models`)
-          
-          // Debug: verificar estrutura dos dados
-          if (data.data.length > 0) {
-            const sample = data.data[0]
-            console.log('Sample model data:', sample)
-            console.log('Sample provider:', sample.provider, 'type:', typeof sample.provider)
-            console.log('Sample model:', sample.model, 'type:', typeof sample.model)
-            
-            // Contar modelos com provider válido
-            const withValidProvider = data.data.filter(m => m.provider && m.provider !== 'null' && m.provider !== null)
-            console.log(`Models with valid provider: ${withValidProvider.length} out of ${data.data.length}`)
-            
-            // Contar modelos com model válido
-            const withValidModel = data.data.filter(m => m.model && m.model !== 'null' && m.model !== null)
-            console.log(`Models with valid model: ${withValidModel.length} out of ${data.data.length}`)
-            
-            // Verificar alguns exemplos de provider/model inválidos
-            const invalidProvider = data.data.filter(m => !m.provider || m.provider === 'null' || m.provider === null).slice(0, 3)
-            if (invalidProvider.length > 0) {
-              console.log('Examples of invalid providers:', invalidProvider.map(m => ({ provider: m.provider, model: m.model })))
-            }
-          }
         } else {
-          console.warn('Invalid response format:', data)
           setPrices([])
         }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido'
-        console.error('Error fetching prices:', error)
         setPricesError(`Não foi possível carregar os modelos: ${errorMessage}. Verifique se a API está acessível em ${API_BASE_URL}/prices`)
         setPrices([])
       } finally {
@@ -129,7 +101,6 @@ export function Docs() {
   const validPrices = prices.filter((model) => {
     // Filtrar modelos inválidos: provider e model devem existir e não serem "null"
     if (!model) {
-      console.log('Filtered out: model is falsy')
       return false
     }
     
@@ -141,7 +112,6 @@ export function Docs() {
                              model.provider.trim() !== ''
     
     if (!hasValidProvider) {
-      console.log('Filtered out: invalid provider', model.provider)
       return false
     }
     
@@ -153,14 +123,11 @@ export function Docs() {
                           model.model.trim() !== ''
     
     if (!hasValidModel) {
-      console.log('Filtered out: invalid model', model.model)
       return false
     }
     
     return true
   })
-
-  console.log(`Valid prices after filter: ${validPrices.length} out of ${prices.length}`)
 
   const modelsByProvider = validPrices.reduce((acc, model) => {
     const provider = model.provider || 'Unknown'
@@ -170,8 +137,6 @@ export function Docs() {
     acc[provider].push(model)
     return acc
   }, {} as Record<string, PriceData[]>)
-  
-  console.log(`Models grouped by provider: ${Object.keys(modelsByProvider).length} providers`)
 
   const exampleCode = {
     curl: `curl -X POST https://api.llmcostradar.com/track-llm \\

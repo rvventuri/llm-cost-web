@@ -10,8 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { ApiKey } from '@/lib/api-keys-api'
-import { deleteApiKey } from '@/lib/api-keys-api'
+import { deleteApiKey, type ApiKey } from '@/lib/api-keys-api'
 
 type ApiKeysDeleteDialogProps = {
   currentRow: ApiKey | null

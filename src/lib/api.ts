@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosError } from 'axios'
+import axios, { type AxiosInstance, type AxiosError } from 'axios'
 import { useAuthStore } from '@/stores/auth-store'
 
 // Base URL da API - pode ser configurada via variável de ambiente

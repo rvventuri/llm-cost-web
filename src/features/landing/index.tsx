@@ -1,16 +1,9 @@
-import { ArrowRight, Check, TrendingUp, DollarSign, Zap, BarChart3, Clock, Sparkles, BookOpen } from 'lucide-react'
+import { ArrowRight, Check, TrendingUp, Zap, BarChart3, Clock, Sparkles, BookOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Link } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
 
 export function Landing() {
-  const [mounted, setMounted] = useState(false)
-  
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-  
   return (
     <div className='min-h-screen bg-background'>
       {/* Header - Minimalista */}
@@ -52,7 +45,7 @@ export function Landing() {
         <div className='absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.05),transparent_50%)]' />
         
         <div className='container mx-auto px-4 py-20 relative z-10'>
-          <div className={`max-w-4xl mx-auto text-center space-y-8 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className='max-w-4xl mx-auto text-center space-y-8 transition-all duration-1000 opacity-100 translate-y-0'>
             {/* Badge minimalista */}
             <Badge 
               variant='outline' 

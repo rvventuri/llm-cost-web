@@ -83,9 +83,8 @@ export function Onboarding() {
         }
         toast.success('Primeiro evento detectado com sucesso!')
       }
-    } catch (error) {
-      // Silenciar erros de polling para não poluir o console
-      console.error('Erro ao verificar primeiro evento:', error)
+    } catch {
+      // Silenciar erros de polling
     } finally {
       setIsCheckingEvent(false)
     }

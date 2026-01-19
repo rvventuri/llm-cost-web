@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { format, startOfMonth } from 'date-fns'
 import { Loader2 } from 'lucide-react'
@@ -35,7 +35,6 @@ export function DashboardLLM() {
     data: dashboardResponse,
     isLoading,
     error,
-    refetch,
   } = useQuery({
     queryKey: ['dashboard', filters],
     queryFn: async () => {

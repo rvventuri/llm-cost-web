@@ -85,7 +85,7 @@ export const apiKeysColumns: ColumnDef<ApiKey>[] = [
         </Badge>
       )
     },
-    filterFn: (row, id, value) => {
+    filterFn: (row, _id, value) => {
       if (!value || !Array.isArray(value) || value.length === 0) return true
       const status = getStatusBadge(row.original)
       // Converter valores do filtro para comparar com os labels

@@ -56,13 +56,14 @@ export function PeriodFilters({
         start = startOfMonth(now)
         start.setHours(0, 0, 0, 0)
         break
-      case 'lastMonth':
+      case 'lastMonth': {
         const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
         start = startOfMonth(lastMonth)
         start.setHours(0, 0, 0, 0)
         end = new Date(now.getFullYear(), now.getMonth(), 0)
         end.setHours(23, 59, 59, 999)
         break
+      }
       default:
         start = startOfMonth(now)
     }

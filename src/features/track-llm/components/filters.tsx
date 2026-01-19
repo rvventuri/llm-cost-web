@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react'
-import { X, Filter } from 'lucide-react'
+import { useMemo } from 'react'
+import { X, Filter, Calendar as CalendarIcon } from 'lucide-react'
 import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -154,10 +153,11 @@ export function Filters({ events, filters, onFiltersChange }: FiltersProps) {
                 onSelect={(date) =>
                   updateFilters({ dateRange: { ...filters.dateRange, from: date } })
                 }
-                disabled={(date: Date) =>
-                  date > new Date() ||
-                  (filters.dateRange.to && date > filters.dateRange.to)
-                }
+                disabled={(date: Date) => {
+                  if (date > new Date()) return true
+                  if (filters.dateRange.to && date > filters.dateRange.to) return true
+                  return false
+                }}
               />
             </PopoverContent>
           </Popover>
@@ -192,10 +192,11 @@ export function Filters({ events, filters, onFiltersChange }: FiltersProps) {
                 onSelect={(date) =>
                   updateFilters({ dateRange: { ...filters.dateRange, to: date } })
                 }
-                disabled={(date: Date) =>
-                  date > new Date() ||
-                  (filters.dateRange.from && date < filters.dateRange.from)
-                }
+                disabled={(date: Date) => {
+                  if (date > new Date()) return true
+                  if (filters.dateRange.from && date < filters.dateRange.from) return true
+                  return false
+                }}
               />
             </PopoverContent>
           </Popover>

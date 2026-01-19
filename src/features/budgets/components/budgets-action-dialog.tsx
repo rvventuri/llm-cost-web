@@ -31,8 +31,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import type { Budget } from '@/lib/budgets-api'
-import { createBudget, updateBudget } from '@/lib/budgets-api'
+import { createBudget, updateBudget, type Budget } from '@/lib/budgets-api'
 import { budgetSchema, type BudgetFormValues } from '../data/schema'
 import { useBudgets } from './budgets-provider'
 
@@ -55,7 +54,7 @@ export function BudgetsActionDialog({
   const { closeDialog } = useBudgets()
 
   const form = useForm<BudgetFormValues>({
-    resolver: zodResolver(budgetSchema),
+    resolver: zodResolver(budgetSchema) as any,
     defaultValues: {
       name: '',
       description: '',

@@ -78,11 +78,15 @@ export function TimeSeriesChart({ data }: TimeSeriesChartProps) {
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '6px',
               }}
-              formatter={(value: number, name: string) => {
-                if (name === 'cost') return formatCurrency(value)
-                if (name === 'tokens') return formatNumber(value)
-                return value
-              }}
+              formatter={((value: any, name: any) => {
+                if (value === undefined || value === null) return ''
+                const numValue = typeof value === 'number' ? value : Number(value)
+                if (isNaN(numValue)) return ''
+                const nameStr = name ?? ''
+                if (nameStr === 'cost') return formatCurrency(numValue)
+                if (nameStr === 'tokens') return formatNumber(numValue)
+                return String(numValue)
+              }) as any}
               labelFormatter={(label) => `Data: ${label}`}
             />
             <Legend />

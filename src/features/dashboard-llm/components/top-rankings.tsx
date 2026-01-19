@@ -14,7 +14,7 @@ type TopRankingsProps = {
   type?: 'features' | 'tags' | 'models' | 'providers'
 }
 
-export function TopRankings({ title, data, type = 'features' }: TopRankingsProps) {
+export function TopRankings({ title, data }: TopRankingsProps) {
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',

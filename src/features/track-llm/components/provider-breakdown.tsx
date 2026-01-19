@@ -6,7 +6,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { TrackLLMEvent } from '@/lib/track-llm-api'
 import type { LLMMetrics } from '../data/schema'
 
 type ProviderBreakdownProps = {

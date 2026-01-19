@@ -14,16 +14,16 @@ export const budgetSchema = z
       .min(0, 'O valor deve ser maior ou igual a zero')
       .positive('O valor deve ser maior que zero'),
     type: z.enum(['tokens', 'usd'], {
-      required_error: 'O tipo é obrigatório',
+      message: 'O tipo é obrigatório',
     }),
     period: z.enum(['daily', 'weekly', 'monthly'], {
-      required_error: 'O período é obrigatório',
+      message: 'O período é obrigatório',
     }),
     featureId: z.number().optional().nullable(),
     tagId: z.number().optional().nullable(),
     modelId: z.number().optional().nullable(),
     providerId: z.number().optional().nullable(),
-    isActive: z.boolean().default(true),
+    isActive: z.boolean(),
   })
   .refine(
     (data) => {

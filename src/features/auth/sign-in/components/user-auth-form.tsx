@@ -31,7 +31,7 @@ const formSchema = z.object({
     .min(6, 'Password must be at least 6 characters long'),
 })
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {}
+type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement>
 
 export function UserAuthForm({
   className,
@@ -71,7 +71,7 @@ export function UserAuthForm({
         const targetPath = hasApiKeys ? '/dashboard-llm' : '/onboarding'
         navigate({ to: targetPath, replace: true })
         toast.success(`Bem-vindo de volta, ${response.user.name}!`)
-      } catch (error) {
+      } catch {
         // Se houver erro ao buscar API keys, redirecionar para onboarding
         navigate({ to: '/onboarding', replace: true })
         toast.success(`Bem-vindo de volta, ${response.user.name}!`)

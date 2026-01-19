@@ -55,15 +55,7 @@ export function SignIn() {
             </div>
             
             <p className='text-xs text-muted-foreground font-light'>
-              Ao entrar, você concorda com nossos{' '}
-              <Link to='/terms' className='underline hover:text-foreground transition-colors'>
-                Termos de Serviço
-              </Link>{' '}
-              e{' '}
-              <Link to='/privacy' className='underline hover:text-foreground transition-colors'>
-                Política de Privacidade
-              </Link>
-              .
+              Ao entrar, você concorda com nossos Termos de Serviço e Política de Privacidade.
             </p>
           </div>
         </div>

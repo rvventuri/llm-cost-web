@@ -26,21 +26,11 @@ export function OverviewCards({ overview }: OverviewCardsProps) {
     return new Intl.NumberFormat('en-US').format(value)
   }
 
-  const getTrendIcon = (change: number) => {
-    if (change > 0) return TrendingUp
-    if (change < 0) return TrendingDown
-    return Minus
-  }
-
   const getTrendColor = (change: number) => {
     if (change > 0) return 'text-red-600 dark:text-red-400'
     if (change < 0) return 'text-green-600 dark:text-green-400'
     return 'text-gray-600 dark:text-gray-400'
   }
-
-  const TrendIcon = getTrendIcon(overview.trends.costChange)
-  const TrendIconTokens = getTrendIcon(overview.trends.tokensChange)
-  const TrendIconEvents = getTrendIcon(overview.trends.eventsChange)
 
   return (
     <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
@@ -53,7 +43,13 @@ export function OverviewCards({ overview }: OverviewCardsProps) {
           <div className='text-2xl font-bold'>{formatCurrency(overview.totalCost)}</div>
           <p className='text-xs text-muted-foreground mt-1'>Valores são estimativas</p>
           <div className='flex items-center mt-2'>
-            <TrendIcon className={cn('h-4 w-4', getTrendColor(overview.trends.costChange))} />
+            {overview.trends.costChange > 0 ? (
+              <TrendingUp className={cn('h-4 w-4', getTrendColor(overview.trends.costChange))} />
+            ) : overview.trends.costChange < 0 ? (
+              <TrendingDown className={cn('h-4 w-4', getTrendColor(overview.trends.costChange))} />
+            ) : (
+              <Minus className={cn('h-4 w-4', getTrendColor(overview.trends.costChange))} />
+            )}
             <span className={cn('ml-2 text-xs', getTrendColor(overview.trends.costChange))}>
               {Math.abs(overview.trends.costChange).toFixed(1)}% vs período anterior
             </span>
@@ -69,7 +65,13 @@ export function OverviewCards({ overview }: OverviewCardsProps) {
         <CardContent>
           <div className='text-2xl font-bold'>{formatNumber(overview.totalTokens)}</div>
           <div className='flex items-center mt-2'>
-            <TrendIconTokens className={cn('h-4 w-4', getTrendColor(overview.trends.tokensChange))} />
+            {overview.trends.tokensChange > 0 ? (
+              <TrendingUp className={cn('h-4 w-4', getTrendColor(overview.trends.tokensChange))} />
+            ) : overview.trends.tokensChange < 0 ? (
+              <TrendingDown className={cn('h-4 w-4', getTrendColor(overview.trends.tokensChange))} />
+            ) : (
+              <Minus className={cn('h-4 w-4', getTrendColor(overview.trends.tokensChange))} />
+            )}
             <span className={cn('ml-2 text-xs', getTrendColor(overview.trends.tokensChange))}>
               {Math.abs(overview.trends.tokensChange).toFixed(1)}%
             </span>
@@ -85,7 +87,13 @@ export function OverviewCards({ overview }: OverviewCardsProps) {
         <CardContent>
           <div className='text-2xl font-bold'>{formatNumber(overview.totalEvents)}</div>
           <div className='flex items-center mt-2'>
-            <TrendIconEvents className={cn('h-4 w-4', getTrendColor(overview.trends.eventsChange))} />
+            {overview.trends.eventsChange > 0 ? (
+              <TrendingUp className={cn('h-4 w-4', getTrendColor(overview.trends.eventsChange))} />
+            ) : overview.trends.eventsChange < 0 ? (
+              <TrendingDown className={cn('h-4 w-4', getTrendColor(overview.trends.eventsChange))} />
+            ) : (
+              <Minus className={cn('h-4 w-4', getTrendColor(overview.trends.eventsChange))} />
+            )}
             <span className={cn('ml-2 text-xs', getTrendColor(overview.trends.eventsChange))}>
               {Math.abs(overview.trends.eventsChange).toFixed(1)}%
             </span>

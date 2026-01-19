@@ -10,8 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { Budget } from '@/lib/budgets-api'
-import { deleteBudget } from '@/lib/budgets-api'
+import { deleteBudget, type Budget } from '@/lib/budgets-api'
 import { useBudgets } from './budgets-provider'
 
 type BudgetsDeleteDialogProps = {
