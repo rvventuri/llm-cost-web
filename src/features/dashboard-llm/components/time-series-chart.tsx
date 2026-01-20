@@ -1,6 +1,6 @@
 import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { Line, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts'
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
 import {
   Card,
   CardContent,
@@ -24,91 +24,123 @@ export function TimeSeriesChart({ data }: TimeSeriesChartProps) {
     }).format(value)
   }
 
-  const formatNumber = (value: number) => {
-    return new Intl.NumberFormat('en-US').format(value)
-  }
+  // Garantir que os dados estão no formato correto
+  const chartData = data
+    .map((item) => {
+      try {
+        // Tentar parsear a data
+        let dateStr = item.date
+        let formattedDate = dateStr
+        
+        if (typeof dateStr === 'string') {
+          try {
+            // Tentar parseISO primeiro
+            const parsedDate = parseISO(dateStr)
+            if (!isNaN(parsedDate.getTime())) {
+              formattedDate = format(parsedDate, 'dd/MM', { locale: ptBR })
+            } else {
+              // Se parseISO falhar, tentar new Date
+              const dateObj = new Date(dateStr)
+              if (!isNaN(dateObj.getTime())) {
+                formattedDate = format(dateObj, 'dd/MM', { locale: ptBR })
+              } else {
+                // Se ambos falharem, usar a string original
+                formattedDate = dateStr
+              }
+            }
+          } catch {
+            // Em caso de erro no parse, usar a string original
+            formattedDate = dateStr
+          }
+        }
+        
+        return {
+          date: formattedDate,
+          cost: Number(item.cost || 0),
+          fullDate: item.date,
+        }
+      } catch (error) {
+        // Em caso de erro, retornar valores padrão
+        return {
+          date: String(item.date || ''),
+          cost: Number(item.cost || 0),
+          fullDate: item.date,
+        }
+      }
+    })
+    .filter((item) => item.cost > 0) // Filtrar itens vazios
 
-  const chartData = data.map((item) => ({
-    date: format(parseISO(item.date), 'dd/MM', { locale: ptBR }),
-    cost: Number(item.cost.toFixed(2)),
-    tokens: item.tokens,
-    events: item.events,
-    fullDate: item.date,
-  }))
+  if (chartData.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Custos ao Longo do Tempo (Estimado)</CardTitle>
+          <CardDescription>
+            Evolução de custos ao longo do período. Valores em USD são estimativas.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className='flex items-center justify-center h-[350px] text-muted-foreground'>
+            Nenhum dado disponível
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Custos ao Longo do Tempo (Estimado)</CardTitle>
         <CardDescription>
-          Evolução de custos, tokens e eventos ao longo do período. Valores em USD são estimativas.
+          Evolução de custos ao longo do período. Valores em USD são estimativas.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width='100%' height={350}>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray='3 3' className='stroke-muted' />
+          <BarChart 
+            data={chartData}
+            margin={{ top: 5, right: 20, left: 20, bottom: 60 }}
+          >
+            <CartesianGrid strokeDasharray='3 3' className='stroke-muted' opacity={0.3} />
             <XAxis
               dataKey='date'
               stroke='hsl(var(--muted-foreground))'
               fontSize={12}
               tickLine={false}
               axisLine={false}
+              angle={-45}
+              textAnchor='end'
+              height={60}
             />
             <YAxis
-              yAxisId='left'
               stroke='hsl(var(--muted-foreground))'
               fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `$${value.toFixed(2)}`}
-            />
-            <YAxis
-              yAxisId='right'
-              orientation='right'
-              stroke='hsl(var(--muted-foreground))'
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-              tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
+              tickFormatter={(value) => `$${value.toFixed(0)}`}
             />
             <Tooltip
               contentStyle={{
                 backgroundColor: 'hsl(var(--background))',
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '6px',
+                padding: '8px 12px',
               }}
-              formatter={((value: any, name: any) => {
+              formatter={(value: any) => {
                 if (value === undefined || value === null) return ''
                 const numValue = typeof value === 'number' ? value : Number(value)
                 if (isNaN(numValue)) return ''
-                const nameStr = name ?? ''
-                if (nameStr === 'cost') return formatCurrency(numValue)
-                if (nameStr === 'tokens') return formatNumber(numValue)
-                return String(numValue)
-              }) as any}
+                return formatCurrency(numValue)
+              }}
               labelFormatter={(label) => `Data: ${label}`}
             />
-            <Legend />
-            <Line
-              yAxisId='left'
-              type='monotone'
+            <Bar
               dataKey='cost'
-              stroke='hsl(var(--primary))'
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              name='Custo (USD - Estimado)'
+              fill='hsl(var(--primary))'
+              radius={[4, 4, 0, 0]}
             />
-            <Line
-              yAxisId='right'
-              type='monotone'
-              dataKey='tokens'
-              stroke='hsl(var(--chart-1))'
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              name='Tokens'
-            />
-          </LineChart>
+          </BarChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>

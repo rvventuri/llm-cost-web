@@ -1,7 +1,142 @@
-import { ArrowRight, Check, TrendingUp, Zap, BarChart3, Clock, Sparkles, BookOpen } from 'lucide-react'
+import { ArrowRight, Check, BookOpen, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Link } from '@tanstack/react-router'
+import { OverviewCards } from '@/features/dashboard-llm/components/overview-cards'
+import { TimeSeriesChart } from '@/features/dashboard-llm/components/time-series-chart'
+import { TopRankings } from '@/features/dashboard-llm/components/top-rankings'
+import { BudgetStatusCards } from '@/features/dashboard-llm/components/budget-status-cards'
+import type { DashboardData } from '@/lib/dashboard-api'
+
+// Dados fictícios realistas para demonstração
+const mockDashboardData: DashboardData = {
+  overview: {
+    totalCost: 2847.32,
+    totalTokens: 12450000,
+    totalEvents: 45620,
+    averageCostPerEvent: 0.0624,
+    period: {
+      start: '2024-01-01',
+      end: '2024-01-31',
+      type: 'monthly',
+    },
+    trends: {
+      costChange: 12.5,
+      tokensChange: 8.3,
+      eventsChange: 15.2,
+    },
+  },
+  timeSeries: [
+    { date: '2024-01-01', cost: 45.23, tokens: 180000, events: 650 },
+    { date: '2024-01-02', cost: 52.18, tokens: 210000, events: 720 },
+    { date: '2024-01-03', cost: 48.92, tokens: 195000, events: 680 },
+    { date: '2024-01-04', cost: 67.45, tokens: 270000, events: 890 },
+    { date: '2024-01-05', cost: 89.12, tokens: 355000, events: 1120 },
+    { date: '2024-01-06', cost: 95.34, tokens: 380000, events: 1250 },
+    { date: '2024-01-07', cost: 102.67, tokens: 410000, events: 1380 },
+    { date: '2024-01-08', cost: 98.23, tokens: 392000, events: 1320 },
+    { date: '2024-01-09', cost: 87.45, tokens: 350000, events: 1180 },
+    { date: '2024-01-10', cost: 91.78, tokens: 367000, events: 1240 },
+    { date: '2024-01-11', cost: 105.23, tokens: 421000, events: 1420 },
+    { date: '2024-01-12', cost: 112.45, tokens: 450000, events: 1520 },
+    { date: '2024-01-13', cost: 108.92, tokens: 436000, events: 1470 },
+    { date: '2024-01-14', cost: 125.67, tokens: 503000, events: 1690 },
+    { date: '2024-01-15', cost: 118.34, tokens: 473000, events: 1590 },
+    { date: '2024-01-16', cost: 134.56, tokens: 538000, events: 1810 },
+    { date: '2024-01-17', cost: 142.89, tokens: 572000, events: 1920 },
+    { date: '2024-01-18', cost: 138.12, tokens: 553000, events: 1860 },
+    { date: '2024-01-19', cost: 145.23, tokens: 581000, events: 1950 },
+    { date: '2024-01-20', cost: 152.67, tokens: 611000, events: 2050 },
+    { date: '2024-01-21', cost: 148.92, tokens: 596000, events: 2000 },
+    { date: '2024-01-22', cost: 156.34, tokens: 625000, events: 2100 },
+    { date: '2024-01-23', cost: 162.78, tokens: 651000, events: 2190 },
+    { date: '2024-01-24', cost: 158.45, tokens: 634000, events: 2130 },
+    { date: '2024-01-25', cost: 165.12, tokens: 661000, events: 2220 },
+    { date: '2024-01-26', cost: 172.56, tokens: 690000, events: 2320 },
+    { date: '2024-01-27', cost: 168.89, tokens: 676000, events: 2270 },
+    { date: '2024-01-28', cost: 175.23, tokens: 701000, events: 2350 },
+    { date: '2024-01-29', cost: 182.67, tokens: 731000, events: 2450 },
+    { date: '2024-01-30', cost: 178.34, tokens: 713000, events: 2390 },
+    { date: '2024-01-31', cost: 185.12, tokens: 741000, events: 2490 },
+  ],
+  topFeatures: [
+    { id: 1, name: 'chat-completion', cost: 1245.67, tokens: 5450000, events: 18920, percentage: 43.8 },
+    { id: 2, name: 'document-analysis', cost: 678.92, tokens: 2980000, events: 12340, percentage: 23.9 },
+    { id: 3, name: 'code-generation', cost: 523.45, tokens: 2290000, events: 8920, percentage: 18.4 },
+    { id: 4, name: 'translation', cost: 234.18, tokens: 1020000, events: 4560, percentage: 8.2 },
+    { id: 5, name: 'summarization', cost: 165.10, tokens: 721000, events: 2880, percentage: 5.8 },
+  ],
+  topTags: [
+    { id: 1, name: 'production', cost: 1892.34, tokens: 8290000, events: 31240, percentage: 66.5 },
+    { id: 2, name: 'staging', cost: 678.45, tokens: 2970000, events: 11280, percentage: 23.8 },
+    { id: 3, name: 'development', cost: 276.53, tokens: 1210000, events: 3100, percentage: 9.7 },
+  ],
+  topModels: [
+    { id: 1, name: 'gpt-4-turbo', cost: 1456.78, tokens: 6380000, events: 18920, percentage: 51.2 },
+    { id: 2, name: 'gpt-3.5-turbo', cost: 678.92, tokens: 2970000, events: 15680, percentage: 23.9 },
+    { id: 3, name: 'claude-3-opus', cost: 523.45, tokens: 2290000, events: 7820, percentage: 18.4 },
+    { id: 4, name: 'claude-3-sonnet', cost: 188.17, tokens: 821000, events: 3200, percentage: 6.6 },
+  ],
+  topProviders: [
+    { id: 1, name: 'OpenAI', cost: 2135.70, tokens: 9350000, events: 34580, percentage: 75.0 },
+    { id: 2, name: 'Anthropic', cost: 711.62, tokens: 3110000, events: 11040, percentage: 25.0 },
+  ],
+  budgetsStatus: [
+    {
+      budget: {
+        id: 1,
+        name: 'Budget Mensal Geral',
+        amount: 5000,
+        type: 'usd',
+        period: 'monthly',
+      },
+      consumption: {
+        consumed: 2847.32,
+        percentage: 56.9,
+        status: 'ok',
+        remaining: 2152.68,
+      },
+    },
+    {
+      budget: {
+        id: 2,
+        name: 'Budget GPT-4',
+        amount: 2000,
+        type: 'usd',
+        period: 'monthly',
+      },
+      consumption: {
+        consumed: 1456.78,
+        percentage: 72.8,
+        status: 'warning',
+        remaining: 543.22,
+      },
+      filter: {
+        type: 'model',
+        name: 'gpt-4-turbo',
+      },
+    },
+    {
+      budget: {
+        id: 3,
+        name: 'Budget Production',
+        amount: 3000,
+        type: 'usd',
+        period: 'monthly',
+      },
+      consumption: {
+        consumed: 1892.34,
+        percentage: 63.1,
+        status: 'ok',
+        remaining: 1107.66,
+      },
+      filter: {
+        type: 'tag',
+        name: 'production',
+      },
+    },
+  ],
+}
 
 export function Landing() {
   return (
@@ -11,7 +146,7 @@ export function Landing() {
         <div className='container mx-auto px-4'>
           <div className='flex h-16 items-center justify-between'>
             {/* Logo/Brand */}
-            <Link to='/landing' className='flex items-center space-x-2'>
+            <Link to='/' className='flex items-center space-x-2'>
               <div className='text-lg font-medium tracking-tight'>LLM Cost Radar</div>
             </Link>
             
@@ -38,15 +173,10 @@ export function Landing() {
         </div>
       </header>
 
-      {/* Hero Section - Minimalista */}
-      <section className='relative min-h-screen flex items-center justify-center overflow-hidden border-b'>
-        {/* Background sutil */}
-        <div className='absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5' />
-        <div className='absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.05),transparent_50%)]' />
-        
-        <div className='container mx-auto px-4 py-20 relative z-10'>
-          <div className='max-w-4xl mx-auto text-center space-y-8 transition-all duration-1000 opacity-100 translate-y-0'>
-            {/* Badge minimalista */}
+      {/* Hero Section - Focado no produto */}
+      <section className='relative border-b'>
+        <div className='container mx-auto px-4 py-16'>
+          <div className='max-w-4xl mx-auto text-center space-y-6'>
             <Badge 
               variant='outline' 
               className='mb-4 px-4 py-1.5 text-xs font-normal tracking-wide border-primary/20 bg-background/50 backdrop-blur-sm'
@@ -54,92 +184,173 @@ export function Landing() {
               FinOps for LLMs
             </Badge>
             
-            {/* Headline principal */}
-            <h1 className='text-5xl sm:text-6xl md:text-7xl font-light tracking-tight leading-tight'>
-              Você sabe quanto custa
+            <h1 className='text-4xl sm:text-5xl md:text-6xl font-light tracking-tight leading-tight'>
+              Controle total dos seus
               <br />
-              <span className='font-medium text-primary'>cada resposta do seu LLM?</span>
+              <span className='font-medium text-primary'>custos de IA em tempo real</span>
             </h1>
             
-            {/* Subheadline */}
-            <p className='text-xl sm:text-2xl text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed'>
-              LLMs são baratos... até irem para produção.
+            <p className='text-lg sm:text-xl text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed'>
+              Veja exatamente quanto cada feature, modelo e endpoint está custando.
               <br />
-              Ganhe visibilidade e controle — sem refatorar nada.
+              Sem SDK obrigatório. Sem lock-in. Setup em 5 minutos.
             </p>
             
-            {/* CTA Principal */}
-            <div className='flex justify-center items-center pt-4'>
+            <div className='flex justify-center items-center pt-4 gap-4'>
               <Button 
                 asChild 
                 size='lg' 
                 className='px-8 py-6 text-base font-normal h-auto rounded-full hover:scale-105 transition-transform duration-300'
               >
                 <Link to='/sign-up'>
-                  Comece agora
+                  Comece grátis agora
                   <ArrowRight className='ml-2 h-4 w-4' />
                 </Link>
               </Button>
             </div>
             
-            {/* Features inline minimalistas */}
-            <div className='flex flex-wrap justify-center gap-6 pt-8 text-sm text-muted-foreground'>
+            <div className='flex flex-wrap justify-center gap-6 pt-4 text-sm text-muted-foreground'>
               <span className='flex items-center gap-2'>
-                <Clock className='h-4 w-4' />
-                5 minutos
+                <Check className='h-4 w-4 text-primary' />
+                Sem cartão de crédito
               </span>
               <span className='flex items-center gap-2'>
-                <Zap className='h-4 w-4' />
-                Sem SDK
+                <Check className='h-4 w-4 text-primary' />
+                Setup em minutos
               </span>
               <span className='flex items-center gap-2'>
-                <Check className='h-4 w-4' />
-                Sem lock-in
+                <Check className='h-4 w-4 text-primary' />
+                Dados em tempo real
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Problema - Minimalista */}
-      <section className='py-32 border-b'>
+      {/* Preview do Dashboard - Foco no produto */}
+      <section className='py-16 border-b bg-muted/20'>
         <div className='container mx-auto px-4'>
-          <div className='max-w-3xl mx-auto space-y-16'>
+          <div className='max-w-7xl mx-auto space-y-8'>
             <div className='text-center space-y-4'>
-              <h2 className='text-4xl sm:text-5xl font-light tracking-tight'>
-                O problema real
+              <div className='flex items-center justify-center gap-2 text-sm text-muted-foreground mb-4'>
+                <Eye className='h-4 w-4' />
+                <span>Pré-visualização do Dashboard</span>
+              </div>
+              <h2 className='text-3xl sm:text-4xl font-light tracking-tight'>
+                Veja o que você vai enxergar
               </h2>
-              <p className='text-lg text-muted-foreground font-light max-w-xl mx-auto'>
-                Sem visibilidade, não existe controle. Quando você percebe, já passou do budget.
+              <p className='text-lg text-muted-foreground font-light max-w-2xl mx-auto'>
+                Dados fictícios para demonstração. Seus dados reais aparecerão assim.
+              </p>
+            </div>
+
+            {/* Dashboard Preview */}
+            <div className='bg-background border rounded-lg p-6 shadow-lg'>
+              {/* Overview Cards */}
+              <div className='mb-8'>
+                <OverviewCards overview={mockDashboardData.overview} />
+              </div>
+
+              {/* Time Series Chart */}
+              <div className='mb-8'>
+                <TimeSeriesChart data={mockDashboardData.timeSeries} />
+              </div>
+
+              {/* Top Rankings */}
+              <div className='grid gap-4 lg:grid-cols-2 mb-8'>
+                <TopRankings
+                  title='Top Features'
+                  data={mockDashboardData.topFeatures}
+                  type='features'
+                />
+                <TopRankings
+                  title='Top Models'
+                  data={mockDashboardData.topModels}
+                  type='models'
+                />
+                <TopRankings
+                  title='Top Providers'
+                  data={mockDashboardData.topProviders}
+                  type='providers'
+                />
+                <TopRankings
+                  title='Top Tags'
+                  data={mockDashboardData.topTags}
+                  type='tags'
+                />
+              </div>
+
+              {/* Budget Status */}
+              <div>
+                <BudgetStatusCards budgetsStatus={mockDashboardData.budgetsStatus} />
+              </div>
+            </div>
+
+            {/* Insights destacados */}
+            <div className='grid sm:grid-cols-3 gap-6 pt-8'>
+              {[
+                {
+                  title: 'Identifique custos invisíveis',
+                  description: 'Veja que a feature "chat-completion" está consumindo 43.8% do seu budget',
+                },
+                {
+                  title: 'Monitore tendências',
+                  description: 'Acompanhe o crescimento de custos ao longo do tempo e projete gastos futuros',
+                },
+                {
+                  title: 'Controle com budgets',
+                  description: 'Configure alertas e limites para evitar surpresas na fatura',
+                },
+              ].map((insight, i) => (
+                <div key={i} className='p-6 rounded-lg border bg-background space-y-2'>
+                  <h3 className='font-medium'>{insight.title}</h3>
+                  <p className='text-sm text-muted-foreground font-light'>{insight.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Valor Agregado */}
+      <section className='py-16 border-b'>
+        <div className='container mx-auto px-4'>
+          <div className='max-w-3xl mx-auto space-y-12'>
+            <div className='text-center space-y-4'>
+              <h2 className='text-3xl sm:text-4xl font-light tracking-tight'>
+                O que você ganha com visibilidade
+              </h2>
+              <p className='text-lg text-muted-foreground font-light'>
+                Dados reais de empresas que implementaram o LLM Cost Radar
               </p>
             </div>
             
             <div className='grid sm:grid-cols-2 gap-8'>
               {[
                 {
-                  title: 'Custos imprevisíveis',
-                  description: 'A fatura chega e você descobre que gastou 3x mais do que esperava.',
+                  metric: '30-80%',
+                  label: 'Redução de custos',
+                  description: 'Ao identificar features e modelos mais caros, empresas reduziram custos significativamente',
                 },
                 {
-                  title: 'Zero visibilidade',
-                  description: 'Não sabe qual feature custa mais. Qual endpoint está drenando o budget.',
+                  metric: '48h',
+                  label: 'Tempo de descoberta',
+                  description: 'Descubra problemas de custo em menos de 48 horas, não semanas',
                 },
                 {
-                  title: 'Tokens explodindo',
-                  description: 'Tokens de saída crescendo sem controle. Modelos premium sem critério.',
+                  metric: '100%',
+                  label: 'Visibilidade',
+                  description: 'Veja cada dólar gasto, por feature, modelo, provider e tag',
                 },
                 {
-                  title: 'Descoberta tardia',
-                  description: 'Logs técnicos não mostram impacto financeiro. Cloud billing não separa.',
+                  metric: 'Zero',
+                  label: 'Refatoração necessária',
+                  description: 'Funciona com qualquer stack. Apenas adicione um endpoint HTTP',
                 },
               ].map((item, i) => (
-                <div 
-                  key={i} 
-                  className='group space-y-2 p-6 rounded-lg hover:bg-muted/50 transition-colors duration-300'
-                >
-                  <h3 className='text-lg font-medium group-hover:text-primary transition-colors'>
-                    {item.title}
-                  </h3>
+                <div key={i} className='space-y-3 p-6 rounded-lg border hover:bg-muted/50 transition-colors'>
+                  <div className='text-3xl font-light text-primary'>{item.metric}</div>
+                  <h3 className='text-lg font-medium'>{item.label}</h3>
                   <p className='text-sm text-muted-foreground font-light leading-relaxed'>
                     {item.description}
                   </p>
@@ -150,130 +361,43 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Por que - Minimalista */}
-      <section className='py-32 border-b bg-muted/30'>
+      {/* Como funciona - Simplificado */}
+      <section className='py-16 border-b bg-muted/20'>
         <div className='container mx-auto px-4'>
-          <div className='max-w-2xl mx-auto space-y-12'>
-            <h2 className='text-4xl sm:text-5xl font-light tracking-tight text-center'>
-              Por que isso acontece?
-            </h2>
-            
-            <div className='space-y-8'>
-              {[
-                {
-                  number: '01',
-                  title: 'LLMs cobram por token',
-                  description: 'Preços variam drasticamente por modelo e provider. Um modelo premium pode custar 10x mais.',
-                },
-                {
-                  number: '02',
-                  title: 'Nomes de modelos mudam',
-                  description: 'Versões novas, nomes diferentes. Sem normalização, é impossível comparar.',
-                },
-                {
-                  number: '03',
-                  title: 'Logs técnicos ≠ visão financeira',
-                  description: 'Cloud billing mostra o total, não o impacto por feature, por modelo ou endpoint.',
-                },
-              ].map((item, i) => (
-                <div key={i} className='flex gap-8 group'>
-                  <div className='flex-shrink-0'>
-                    <span className='text-sm font-mono text-muted-foreground group-hover:text-primary transition-colors'>
-                      {item.number}
-                    </span>
-                  </div>
-                  <div className='flex-1 space-y-2'>
-                    <h3 className='text-xl font-medium group-hover:text-primary transition-colors'>
-                      {item.title}
-                    </h3>
-                    <p className='text-sm text-muted-foreground font-light leading-relaxed'>
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className='pt-8 border-t'>
-              <p className='text-lg font-light text-center'>
-                <span className='font-medium'>Conclusão:</span> Sem visibilidade, não existe controle.
+          <div className='max-w-4xl mx-auto space-y-12'>
+            <div className='text-center space-y-4'>
+              <h2 className='text-3xl sm:text-4xl font-light tracking-tight'>
+                Como funciona
+              </h2>
+              <p className='text-lg text-muted-foreground font-light'>
+                Três passos simples para começar
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Solução - Minimalista */}
-      <section className='py-32 border-b'>
-        <div className='container mx-auto px-4'>
-          <div className='max-w-3xl mx-auto text-center space-y-8'>
-            <Badge 
-              variant='outline' 
-              className='px-4 py-1.5 text-xs font-normal border-primary/20 bg-background/50'
-            >
-              A Solução
-            </Badge>
             
-            <h2 className='text-4xl sm:text-5xl font-light tracking-tight'>
-              LLM Cost Radar
-            </h2>
-            
-            <p className='text-xl text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed'>
-              Monitore, entenda e controle seus custos de IA em tempo real — sem SDK obrigatório, sem lock-in.
-            </p>
-            
-            <div className='flex flex-wrap justify-center gap-3 pt-4'>
-              {['Qualquer stack', 'Qualquer provider', 'Zero refatoração', 'Setup em minutos'].map((badge, i) => (
-                <Badge 
-                  key={i} 
-                  variant='secondary' 
-                  className='px-4 py-1.5 text-xs font-normal rounded-full border-0 bg-muted/50'
-                >
-                  {badge}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Como funciona - Minimalista */}
-      <section className='py-32 border-b bg-muted/30'>
-        <div className='container mx-auto px-4'>
-          <div className='max-w-4xl mx-auto space-y-16'>
-            <h2 className='text-4xl sm:text-5xl font-light tracking-tight text-center'>
-              Como funciona
-            </h2>
-            
-            <div className='grid sm:grid-cols-3 gap-12'>
+            <div className='grid sm:grid-cols-3 gap-8'>
               {[
                 {
-                  number: '1',
-                  title: 'Gere uma API Key',
-                  description: 'Crie sua conta e gere uma API key em segundos. Sem cartão de crédito.',
-                  icon: Sparkles,
+                  step: '1',
+                  title: 'Crie sua conta',
+                  description: 'Gere uma API key em segundos. Sem cartão de crédito necessário.',
                 },
                 {
-                  number: '2',
+                  step: '2',
                   title: 'Envie eventos',
-                  description: 'Endpoint HTTP simples. Funciona com curl, qualquer linguagem.',
-                  icon: BarChart3,
+                  description: 'Um único endpoint HTTP. Funciona com curl, qualquer linguagem, qualquer provider.',
                 },
                 {
-                  number: '3',
-                  title: 'Veja custos em tempo real',
-                  description: 'Dashboard imediato. Custo por modelo, por feature, tendências.',
-                  icon: TrendingUp,
+                  step: '3',
+                  title: 'Veja seus dados',
+                  description: 'Dashboard imediato com custos, tendências, rankings e budgets em tempo real.',
                 },
               ].map((item, i) => (
-                <div key={i} className='group space-y-4 text-center'>
-                  <div className='inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary/20 group-hover:border-primary/40 group-hover:bg-primary/5 transition-all duration-300'>
-                    <span className='text-lg font-light text-primary'>{item.number}</span>
+                <div key={i} className='text-center space-y-4'>
+                  <div className='inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/5'>
+                    <span className='text-lg font-light text-primary'>{item.step}</span>
                   </div>
                   <div className='space-y-2'>
-                    <h3 className='text-lg font-medium group-hover:text-primary transition-colors'>
-                      {item.title}
-                    </h3>
+                    <h3 className='text-lg font-medium'>{item.title}</h3>
                     <p className='text-sm text-muted-foreground font-light leading-relaxed'>
                       {item.description}
                     </p>
@@ -285,65 +409,8 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Benefícios - Minimalista */}
-      <section className='py-32 border-b'>
-        <div className='container mx-auto px-4'>
-          <div className='max-w-3xl mx-auto space-y-12'>
-            <h2 className='text-4xl sm:text-5xl font-light tracking-tight text-center'>
-              O que você passa a enxergar
-            </h2>
-            
-            <div className='grid sm:grid-cols-2 gap-6'>
-              {[
-                'Custo por modelo',
-                'Custo por feature',
-                'Custo diário e tendências',
-                'Picos de uso',
-                'Projeção mensal',
-                'Alertas de risco',
-              ].map((benefit, i) => (
-                <div 
-                  key={i} 
-                  className='flex items-start gap-3 group p-3 rounded-lg hover:bg-muted/50 transition-colors'
-                >
-                  <Check className='h-5 w-5 flex-shrink-0 text-primary mt-0.5 group-hover:scale-110 transition-transform' />
-                  <span className='text-sm font-light'>{benefit}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Prova Social - Minimalista */}
-      <section className='py-32 border-b bg-muted/30'>
-        <div className='container mx-auto px-4'>
-          <div className='max-w-3xl mx-auto text-center space-y-12'>
-            <h2 className='text-4xl sm:text-5xl font-light tracking-tight'>
-              Economize até{' '}
-              <span className='font-medium text-primary'>30–80%</span>
-              <br />
-              apenas com visibilidade
-            </h2>
-            
-            <div className='grid sm:grid-cols-3 gap-8 pt-8'>
-              {[
-                { label: 'Minutos', description: 'Descubra custos invisíveis' },
-                { label: 'Sem surpresas', description: 'Evite sustos na fatura' },
-                { label: 'Production-ready', description: 'Feito para sistemas reais' },
-              ].map((item, i) => (
-                <div key={i} className='space-y-2'>
-                  <div className='text-2xl font-light'>{item.label}</div>
-                  <div className='text-sm text-muted-foreground font-light'>{item.description}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Final - Minimalista */}
-      <section className='py-32 border-b'>
+      {/* CTA Final */}
+      <section className='py-24 border-b'>
         <div className='container mx-auto px-4'>
           <div className='max-w-2xl mx-auto text-center space-y-8'>
             <h2 className='text-4xl sm:text-5xl md:text-6xl font-light tracking-tight leading-tight'>
@@ -362,7 +429,7 @@ export function Landing() {
               className='px-8 py-6 text-base font-normal h-auto rounded-full hover:scale-105 transition-transform duration-300'
             >
               <Link to='/sign-up'>
-                Start monitoring your LLM costs
+                Começar grátis agora
                 <ArrowRight className='ml-2 h-4 w-4' />
               </Link>
             </Button>
