@@ -70,11 +70,9 @@ export function UserAuthForm({
         // Se existir API key, redirecionar para dashboard, senão para onboarding
         const targetPath = hasApiKeys ? '/dashboard-llm' : '/onboarding'
         navigate({ to: targetPath, replace: true })
-        toast.success(`Bem-vindo de volta, ${response.user.name}!`)
       } catch {
         // Se houver erro ao buscar API keys, redirecionar para onboarding
         navigate({ to: '/onboarding', replace: true })
-        toast.success(`Bem-vindo de volta, ${response.user.name}!`)
       }
     } catch (error) {
       const errorMessage =

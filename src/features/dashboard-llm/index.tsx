@@ -7,6 +7,7 @@ import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
+import { ThemeToggleIcon } from '@/components/theme-toggle-icon'
 import { getDashboard, type DashboardParams } from '@/lib/dashboard-api'
 import { OverviewCards } from './components/overview-cards'
 import { TimeSeriesChart } from './components/time-series-chart'
@@ -71,6 +72,7 @@ export function DashboardLLM() {
         <Header fixed>
           <Search />
           <div className='ms-auto flex items-center space-x-4'>
+            <ThemeToggleIcon />
             <ProfileDropdown />
           </div>
         </Header>
@@ -89,6 +91,7 @@ export function DashboardLLM() {
         <Header fixed>
           <Search />
           <div className='ms-auto flex items-center space-x-4'>
+            <ThemeToggleIcon />
             <ProfileDropdown />
           </div>
         </Header>
@@ -112,6 +115,7 @@ export function DashboardLLM() {
         <Header fixed>
           <Search />
           <div className='ms-auto flex items-center space-x-4'>
+            <ThemeToggleIcon />
             <ProfileDropdown />
           </div>
         </Header>
@@ -134,6 +138,7 @@ export function DashboardLLM() {
       <Header fixed>
         <Search />
         <div className='ms-auto flex items-center space-x-4'>
+          <ThemeToggleIcon />
           <ProfileDropdown />
         </div>
       </Header>

@@ -86,8 +86,6 @@ export function SignUpForm({
         // Se houver erro ao buscar API keys (provavelmente porque é novo usuário), redirecionar para onboarding
         navigate({ to: '/onboarding', replace: true })
       }
-
-      toast.success(`Conta criada com sucesso! Bem-vindo, ${response.user.name}!`)
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Erro ao criar conta'
