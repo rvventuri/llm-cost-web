@@ -134,7 +134,6 @@ export function DashboardLLM() {
       <Header fixed>
         <Search />
         <div className='ms-auto flex items-center space-x-4'>
-          <ThemeToggleIcon />
           <ProfileDropdown />
         </div>
       </Header>
