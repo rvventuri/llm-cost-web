@@ -157,15 +157,15 @@ export function Landing() {
                 className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-light'
               >
                 <BookOpen className='h-4 w-4' />
-                Documentação
+                Documentation
               </Link>
               
               <div className='flex items-center gap-2'>
                 <Button asChild variant='ghost' size='sm' className='font-light'>
-                  <Link to='/sign-in'>Entrar</Link>
+                  <Link to='/sign-in'>Sign in</Link>
                 </Button>
                 <Button asChild size='sm' className='font-light rounded-full'>
-                  <Link to='/sign-up'>Criar conta</Link>
+                  <Link to='/sign-up'>Create account</Link>
                 </Button>
               </div>
             </nav>
@@ -185,15 +185,15 @@ export function Landing() {
             </Badge>
             
             <h1 className='text-4xl sm:text-5xl md:text-6xl font-light tracking-tight leading-tight'>
-              Controle total dos seus
+              Full visibility into your
               <br />
-              <span className='font-medium text-primary'>custos de IA em tempo real</span>
+              <span className='font-medium text-primary'>AI costs in real time</span>
             </h1>
             
             <p className='text-lg sm:text-xl text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed'>
-              Veja exatamente quanto cada feature, modelo e endpoint está custando.
+              See exactly how much each feature, model, and endpoint costs.
               <br />
-              Sem SDK obrigatório. Sem lock-in. Setup em 5 minutos.
+              No mandatory SDK. No lock-in. 5-minute setup.
             </p>
             
             <div className='flex justify-center items-center pt-4 gap-4'>
@@ -203,7 +203,7 @@ export function Landing() {
                 className='px-8 py-6 text-base font-normal h-auto rounded-full hover:scale-105 transition-transform duration-300'
               >
                 <Link to='/sign-up'>
-                  Comece grátis agora
+                  Start free now
                   <ArrowRight className='ml-2 h-4 w-4' />
                 </Link>
               </Button>
@@ -212,15 +212,15 @@ export function Landing() {
             <div className='flex flex-wrap justify-center gap-6 pt-4 text-sm text-muted-foreground'>
               <span className='flex items-center gap-2'>
                 <Check className='h-4 w-4 text-primary' />
-                Sem cartão de crédito
+                No credit card required
               </span>
               <span className='flex items-center gap-2'>
                 <Check className='h-4 w-4 text-primary' />
-                Setup em minutos
+                Setup in minutes
               </span>
               <span className='flex items-center gap-2'>
                 <Check className='h-4 w-4 text-primary' />
-                Dados em tempo real
+                Real-time data
               </span>
             </div>
           </div>
@@ -234,13 +234,13 @@ export function Landing() {
             <div className='text-center space-y-4'>
               <div className='flex items-center justify-center gap-2 text-sm text-muted-foreground mb-4'>
                 <Eye className='h-4 w-4' />
-                <span>Pré-visualização do Dashboard</span>
+                <span>Dashboard preview</span>
               </div>
               <h2 className='text-3xl sm:text-4xl font-light tracking-tight'>
-                Veja o que você vai enxergar
+                See what you’ll get
               </h2>
               <p className='text-lg text-muted-foreground font-light max-w-2xl mx-auto'>
-                Dados fictícios para demonstração. Seus dados reais aparecerão assim.
+                Sample data for demonstration. Your real data will look like this.
               </p>
             </div>
 
@@ -290,16 +290,16 @@ export function Landing() {
             <div className='grid sm:grid-cols-3 gap-6 pt-8'>
               {[
                 {
-                  title: 'Identifique custos invisíveis',
-                  description: 'Veja que a feature "chat-completion" está consumindo 43.8% do seu budget',
+                  title: 'Find hidden costs',
+                  description: 'See that the “chat-completion” feature is consuming 43.8% of your budget',
                 },
                 {
-                  title: 'Monitore tendências',
-                  description: 'Acompanhe o crescimento de custos ao longo do tempo e projete gastos futuros',
+                  title: 'Track trends',
+                  description: 'Monitor cost growth over time and forecast future spend',
                 },
                 {
-                  title: 'Controle com budgets',
-                  description: 'Configure alertas e limites para evitar surpresas na fatura',
+                  title: 'Control with budgets',
+                  description: 'Set alerts and limits to avoid billing surprises',
                 },
               ].map((insight, i) => (
                 <div key={i} className='p-6 rounded-lg border bg-background space-y-2'>
@@ -318,10 +318,10 @@ export function Landing() {
           <div className='max-w-3xl mx-auto space-y-12'>
             <div className='text-center space-y-4'>
               <h2 className='text-3xl sm:text-4xl font-light tracking-tight'>
-                O que você ganha com visibilidade
+                What you unlock with visibility
               </h2>
               <p className='text-lg text-muted-foreground font-light'>
-                Dados reais de empresas que implementaram o LLM Cost Radar
+                Benchmarks from companies using LLM Cost Radar
               </p>
             </div>
             
@@ -329,23 +329,23 @@ export function Landing() {
               {[
                 {
                   metric: '30-80%',
-                  label: 'Redução de custos',
-                  description: 'Ao identificar features e modelos mais caros, empresas reduziram custos significativamente',
+                  label: 'Cost reduction',
+                  description: 'By identifying expensive features and models, teams significantly reduced spend',
                 },
                 {
                   metric: '48h',
-                  label: 'Tempo de descoberta',
-                  description: 'Descubra problemas de custo em menos de 48 horas, não semanas',
+                  label: 'Time to insight',
+                  description: 'Detect cost issues in under 48 hours, not weeks',
                 },
                 {
                   metric: '100%',
-                  label: 'Visibilidade',
-                  description: 'Veja cada dólar gasto, por feature, modelo, provider e tag',
+                  label: 'Visibility',
+                  description: 'See every dollar by feature, model, provider, and tag',
                 },
                 {
                   metric: 'Zero',
-                  label: 'Refatoração necessária',
-                  description: 'Funciona com qualquer stack. Apenas adicione um endpoint HTTP',
+                  label: 'Refactoring required',
+                  description: 'Works with any stack. Just send an HTTP request',
                 },
               ].map((item, i) => (
                 <div key={i} className='space-y-3 p-6 rounded-lg border hover:bg-muted/50 transition-colors'>
@@ -367,10 +367,10 @@ export function Landing() {
           <div className='max-w-4xl mx-auto space-y-12'>
             <div className='text-center space-y-4'>
               <h2 className='text-3xl sm:text-4xl font-light tracking-tight'>
-                Como funciona
+                How it works
               </h2>
               <p className='text-lg text-muted-foreground font-light'>
-                Três passos simples para começar
+                Three simple steps to get started
               </p>
             </div>
             
@@ -378,18 +378,18 @@ export function Landing() {
               {[
                 {
                   step: '1',
-                  title: 'Crie sua conta',
-                  description: 'Gere uma API key em segundos. Sem cartão de crédito necessário.',
+                  title: 'Create your account',
+                  description: 'Generate an API key in seconds. No credit card required.',
                 },
                 {
                   step: '2',
-                  title: 'Envie eventos',
-                  description: 'Um único endpoint HTTP. Funciona com curl, qualquer linguagem, qualquer provider.',
+                  title: 'Send events',
+                  description: 'A single HTTP endpoint. Works with cURL, any language, any provider.',
                 },
                 {
                   step: '3',
-                  title: 'Veja seus dados',
-                  description: 'Dashboard imediato com custos, tendências, rankings e budgets em tempo real.',
+                  title: 'See your data',
+                  description: 'Instant dashboard with costs, trends, rankings, and real-time budgets.',
                 },
               ].map((item, i) => (
                 <div key={i} className='text-center space-y-4'>
@@ -414,13 +414,13 @@ export function Landing() {
         <div className='container mx-auto px-4'>
           <div className='max-w-2xl mx-auto text-center space-y-8'>
             <h2 className='text-4xl sm:text-5xl md:text-6xl font-light tracking-tight leading-tight'>
-              Pare de adivinhar
+              Stop guessing
               <br />
-              <span className='font-medium'>seus custos de IA</span>
+              <span className='font-medium'>your AI spend</span>
             </h2>
             
             <p className='text-xl text-muted-foreground font-light'>
-              Tenha controle antes que escale. Comece agora — menos de 5 minutos.
+              Get control before it scales. Start now — in under 5 minutes.
             </p>
             
             <Button 
@@ -429,17 +429,17 @@ export function Landing() {
               className='px-8 py-6 text-base font-normal h-auto rounded-full hover:scale-105 transition-transform duration-300'
             >
               <Link to='/sign-up'>
-                Começar grátis agora
+                Start free now
                 <ArrowRight className='ml-2 h-4 w-4' />
               </Link>
             </Button>
             
             <div className='flex flex-wrap justify-center gap-6 pt-4 text-sm text-muted-foreground font-light'>
-              <span>Sem cartão de crédito</span>
+              <span>No credit card required</span>
               <span>•</span>
-              <span>Setup em minutos</span>
+              <span>Setup in minutes</span>
               <span>•</span>
-              <span>Cancele quando quiser</span>
+              <span>Cancel anytime</span>
             </div>
           </div>
         </div>
@@ -452,13 +452,13 @@ export function Landing() {
             <p>© 2024 LLM Cost Radar</p>
             <div className='flex gap-6'>
               <Link to='/documentation' className='hover:text-foreground transition-colors'>
-                Documentação
+                Documentation
               </Link>
               <Link to='/sign-in' className='hover:text-foreground transition-colors'>
-                Entrar
+                Sign in
               </Link>
               <Link to='/sign-up' className='hover:text-foreground transition-colors'>
-                Começar grátis
+                Start free
               </Link>
             </div>
           </div>

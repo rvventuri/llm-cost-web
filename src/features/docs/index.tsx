@@ -76,7 +76,7 @@ export function Docs() {
         const response = await fetch(url)
         
         if (!response.ok) {
-          throw new Error(`Erro ao carregar preços: ${response.status} ${response.statusText}`)
+          throw new Error(`Failed to load prices: ${response.status} ${response.statusText}`)
         }
         
         const data: PricesResponse = await response.json()
@@ -87,8 +87,10 @@ export function Docs() {
           setPrices([])
         }
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido'
-        setPricesError(`Não foi possível carregar os modelos: ${errorMessage}. Verifique se a API está acessível em ${API_BASE_URL}/prices`)
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        setPricesError(
+          `We couldn't load the models: ${errorMessage}. Please verify the API is reachable at ${API_BASE_URL}/prices`
+        )
         setPrices([])
       } finally {
         setLoadingPrices(false)
@@ -221,13 +223,13 @@ func main() {
   }
   
   const sections = [
-    { id: 'api-key', title: 'Como obter sua API Key' },
-    { id: 'autenticacao', title: 'Autenticação' },
+    { id: 'api-key', title: 'How to get your API key' },
+    { id: 'autenticacao', title: 'Authentication' },
     { id: 'endpoint', title: 'Endpoint' },
-    { id: 'exemplos-uso', title: 'Exemplos de Uso' },
-    { id: 'modelos-aceitos', title: 'Modelos Aceitos' },
-    { id: 'tratamento-erros', title: 'Tratamento de Erros' },
-    { id: 'campos-opcionais', title: 'Campos Opcionais' },
+    { id: 'exemplos-uso', title: 'Usage examples' },
+    { id: 'modelos-aceitos', title: 'Supported models' },
+    { id: 'tratamento-erros', title: 'Error handling' },
+    { id: 'campos-opcionais', title: 'Optional fields' },
   ]
 
   return (
@@ -246,15 +248,15 @@ func main() {
                 className='flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors font-light'
               >
                 <BookOpen className='h-4 w-4' />
-                Documentação
+                Documentation
               </Link>
               
               <div className='flex items-center gap-2'>
                 <Button asChild variant='ghost' size='sm' className='font-light'>
-                  <Link to='/sign-in'>Entrar</Link>
+                  <Link to='/sign-in'>Sign in</Link>
                 </Button>
                 <Button asChild size='sm' className='font-light rounded-full'>
-                  <Link to='/sign-up'>Criar conta</Link>
+                  <Link to='/sign-up'>Create account</Link>
                 </Button>
               </div>
             </nav>
@@ -268,7 +270,7 @@ func main() {
           {/* Sidebar Navigation */}
           <aside className='hidden lg:block w-64 flex-shrink-0'>
             <div className='sticky top-24 space-y-2'>
-              <h3 className='text-sm font-medium text-muted-foreground mb-4'>Navegação</h3>
+              <h3 className='text-sm font-medium text-muted-foreground mb-4'>Navigation</h3>
               <nav className='space-y-1'>
                 {sections.map((section) => (
                   <a
@@ -291,10 +293,10 @@ func main() {
               API Documentation
             </Badge>
             <h1 className='text-5xl sm:text-6xl font-light tracking-tight leading-tight'>
-              Documentação da <span className='font-medium text-primary'>API</span>
+              <span className='font-medium text-primary'>API</span> documentation
             </h1>
             <p className='text-xl text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed'>
-              Rastreie eventos de uso de LLMs e calcule custos automaticamente. Integração simples, poderosa e focada em FinOps.
+              Track LLM usage events and automatically compute costs. Simple integration, powerful insights, built for FinOps.
             </p>
           </div>
 
@@ -302,7 +304,7 @@ func main() {
           <section id='api-key' className='space-y-8 border-b pb-16 scroll-mt-24'>
             <div className='flex items-center gap-3'>
               <Key className='h-6 w-6 text-primary' />
-              <h2 className='text-3xl font-light tracking-tight'>Como obter sua API Key</h2>
+              <h2 className='text-3xl font-light tracking-tight'>How to get your API key</h2>
             </div>
             
             <div className='space-y-6'>
@@ -310,18 +312,18 @@ func main() {
                 {[
                   {
                     step: '1',
-                    title: 'Crie sua conta',
-                    description: 'Faça cadastro gratuito no LLM Cost Radar. Sem cartão de crédito necessário.',
+                    title: 'Create your account',
+                    description: 'Sign up for free on LLM Cost Radar. No credit card required.',
                   },
                   {
                     step: '2',
-                    title: 'Acesse API Keys',
-                    description: 'No dashboard, vá até a seção "API Keys" no menu lateral.',
+                    title: 'Open API Keys',
+                    description: 'In the dashboard, go to “API Keys” in the sidebar menu.',
                   },
                   {
                     step: '3',
-                    title: 'Gere uma nova key',
-                    description: 'Clique em "Criar API Key", dê um nome descritivo e salve a chave exibida.',
+                    title: 'Generate a new key',
+                    description: 'Click “Create API Key”, give it a descriptive name, and save the key shown.',
                   },
                 ].map((item, i) => (
                   <div key={i} className='group space-y-4 text-center'>
@@ -344,9 +346,9 @@ func main() {
                 <div className='flex gap-3'>
                   <AlertCircle className='h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5' />
                   <div className='space-y-1'>
-                    <p className='font-medium text-sm'>Importante</p>
+                    <p className='font-medium text-sm'>Important</p>
                     <p className='text-sm text-muted-foreground font-light'>
-                      A API key completa é exibida apenas uma vez no momento da criação. Certifique-se de salvá-la em um local seguro. Você pode gerar múltiplas keys e desativá-las quando necessário.
+                      Your full API key is shown only once at creation time. Save it in a safe place. You can generate multiple keys and deactivate them whenever needed.
                     </p>
                   </div>
                 </div>
@@ -358,28 +360,28 @@ func main() {
           <section id='autenticacao' className='space-y-8 border-b pb-16 scroll-mt-24'>
             <div className='flex items-center gap-3'>
               <Zap className='h-6 w-6 text-primary' />
-              <h2 className='text-3xl font-light tracking-tight'>Autenticação</h2>
+              <h2 className='text-3xl font-light tracking-tight'>Authentication</h2>
             </div>
             
             <div className='space-y-6'>
               <p className='text-muted-foreground font-light leading-relaxed'>
-                A API utiliza autenticação via <strong className='text-foreground'>API Key</strong> (não JWT). 
-                Envie sua API key no header da requisição usando uma das opções abaixo:
+                This API uses <strong className='text-foreground'>API key</strong> authentication (not JWT).
+                Send your API key in the request headers using one of the options below:
               </p>
               
               <div className='grid sm:grid-cols-2 gap-4'>
                 <div className='space-y-2 p-4 rounded-lg bg-muted/50 border'>
                   <code className='text-sm font-mono font-medium'>x-api-key</code>
-                  <p className='text-xs text-muted-foreground font-light'>Recomendado</p>
+                  <p className='text-xs text-muted-foreground font-light'>Recommended</p>
                 </div>
                 <div className='space-y-2 p-4 rounded-lg bg-muted/50 border'>
                   <code className='text-sm font-mono font-medium'>x-api-token</code>
-                  <p className='text-xs text-muted-foreground font-light'>Alternativo</p>
+                  <p className='text-xs text-muted-foreground font-light'>Alternative</p>
                 </div>
               </div>
               
               <div className='space-y-4'>
-                <h3 className='text-lg font-medium'>Exemplo de requisição autenticada</h3>
+                <h3 className='text-lg font-medium'>Authenticated request example</h3>
                 <CodeBlock code={`curl -X POST ${API_BASE_URL}/track-llm \\
   -H "x-api-key: YOUR_API_KEY" \\
   -H "Content-Type: application/json"`} />
@@ -389,11 +391,11 @@ func main() {
                 <div className='flex gap-3'>
                   <Check className='h-5 w-5 text-primary flex-shrink-0 mt-0.5' />
                   <div className='space-y-2'>
-                    <p className='font-medium text-sm'>Requisitos da API Key</p>
+                    <p className='font-medium text-sm'>API key requirements</p>
                     <ul className='text-sm text-muted-foreground font-light space-y-1 list-disc list-inside'>
-                      <li>Deve estar ativa (<code className='px-1 py-0.5 bg-muted rounded text-xs'>isActive: true</code>)</li>
-                      <li>Não deve estar expirada (se <code className='px-1 py-0.5 bg-muted rounded text-xs'>expiresAt</code> estiver definido)</li>
-                      <li>Pertence à sua organização</li>
+                      <li>Must be active (<code className='px-1 py-0.5 bg-muted rounded text-xs'>isActive: true</code>)</li>
+                      <li>Must not be expired (if <code className='px-1 py-0.5 bg-muted rounded text-xs'>expiresAt</code> is set)</li>
+                      <li>Must belong to your organization</li>
                     </ul>
                   </div>
                 </div>
@@ -415,21 +417,21 @@ func main() {
               </div>
               
               <p className='text-lg text-muted-foreground font-light leading-relaxed'>
-                Registra um evento de uso de modelo LLM e calcula automaticamente o custo em USD baseado nos preços mais recentes do modelo.
+                Records an LLM usage event and automatically computes the USD cost based on the latest model pricing.
               </p>
               
               {/* Campos do Body */}
               <div className='space-y-6'>
-                <h3 className='text-xl font-medium'>Campos do Body (JSON)</h3>
+                <h3 className='text-xl font-medium'>Request body fields (JSON)</h3>
                 
                 <div className='overflow-x-auto border rounded-lg'>
                   <table className='w-full border-collapse'>
                     <thead className='bg-muted/50'>
                       <tr className='border-b'>
-                        <th className='text-left p-4 text-sm font-medium'>Campo</th>
-                        <th className='text-left p-4 text-sm font-medium'>Tipo</th>
-                        <th className='text-left p-4 text-sm font-medium'>Obrigatório</th>
-                        <th className='text-left p-4 text-sm font-medium'>Descrição</th>
+                        <th className='text-left p-4 text-sm font-medium'>Field</th>
+                        <th className='text-left p-4 text-sm font-medium'>Type</th>
+                        <th className='text-left p-4 text-sm font-medium'>Required</th>
+                        <th className='text-left p-4 text-sm font-medium'>Description</th>
                       </tr>
                     </thead>
                     <tbody className='text-sm'>
@@ -438,37 +440,37 @@ func main() {
                           field: 'provider',
                           type: 'string',
                           required: true,
-                          description: 'Nome do provedor (ex: "ANTHROPIC", "OPENAI")',
+                          description: 'Provider name (e.g. "ANTHROPIC", "OPENAI")',
                         },
                         {
                           field: 'model',
                           type: 'string',
                           required: true,
-                          description: 'Nome do modelo (ex: "claude-3-5-sonnet-20241022")',
+                          description: 'Model name (e.g. "claude-3-5-sonnet-20241022")',
                         },
                         {
                           field: 'tokensIn',
                           type: 'number',
                           required: true,
-                          description: 'Quantidade de tokens de entrada (input), deve ser >= 0',
+                          description: 'Input token count (tokensIn), must be >= 0',
                         },
                         {
                           field: 'tokensOut',
                           type: 'number',
                           required: true,
-                          description: 'Quantidade de tokens de saída (output), deve ser >= 0',
+                          description: 'Output token count (tokensOut), must be >= 0',
                         },
                         {
                           field: 'feature',
                           type: 'string',
                           required: false,
-                          description: 'Descrição da funcionalidade (ex: "chat", "completion")',
+                          description: 'Feature name (e.g. "chat", "completion")',
                         },
                         {
                           field: 'tags',
                           type: 'string[]',
                           required: false,
-                          description: 'Array de strings para categorização (ex: ["production", "user-request"])',
+                          description: 'Array of strings for categorization (e.g. ["production", "user-request"])',
                         },
                       ].map((item, i) => (
                         <tr key={i} className='border-b hover:bg-muted/30 transition-colors'>
@@ -476,9 +478,9 @@ func main() {
                           <td className='p-4 text-muted-foreground font-light'>{item.type}</td>
                           <td className='p-4'>
                             {item.required ? (
-                              <Badge variant='destructive' className='text-xs'>Sim</Badge>
+                              <Badge variant='destructive' className='text-xs'>Yes</Badge>
                             ) : (
-                              <Badge variant='secondary' className='text-xs'>Não</Badge>
+                              <Badge variant='secondary' className='text-xs'>No</Badge>
                             )}
                           </td>
                           <td className='p-4 text-muted-foreground font-light'>{item.description}</td>
@@ -491,7 +493,7 @@ func main() {
               
               {/* Exemplos de código */}
               <div className='space-y-4'>
-                <h3 className='text-xl font-medium'>Exemplos de uso</h3>
+                <h3 className='text-xl font-medium'>Examples</h3>
                 <Tabs defaultValue='curl' className='w-full'>
                   <TabsList className='grid w-full grid-cols-4'>
                     <TabsTrigger value='curl' className='text-xs'>cURL</TabsTrigger>
@@ -516,7 +518,7 @@ func main() {
               
               {/* Response */}
               <div className='space-y-4'>
-                <h3 className='text-xl font-medium'>Response de sucesso (200 OK)</h3>
+                <h3 className='text-xl font-medium'>Successful response (200 OK)</h3>
                 <CodeBlock code={`{
   "success": true,
   "data": {
@@ -541,20 +543,20 @@ func main() {
           <section id='exemplos-uso' className='space-y-8 border-b pb-16 scroll-mt-24'>
             <div className='flex items-center gap-3'>
               <Code className='h-6 w-6 text-primary' />
-              <h2 className='text-3xl font-light tracking-tight'>Exemplos de Uso</h2>
+              <h2 className='text-3xl font-light tracking-tight'>Usage examples</h2>
             </div>
             
             <div className='space-y-12'>
               <p className='text-muted-foreground font-light leading-relaxed'>
-                Veja exemplos práticos de como integrar o LLM Cost Radar em suas aplicações. 
-                Os exemplos mostram como interceptar chamadas de LLMs, extrair informações de tokens e enviar para nosso endpoint.
+                Below are practical examples for integrating LLM Cost Radar into your applications.
+                They demonstrate how to intercept LLM calls, extract token usage, and send events to our endpoint.
               </p>
 
               {/* Python com OpenAI */}
               <div className='space-y-4'>
-                <h3 className='text-2xl font-light tracking-tight'>Python com OpenAI</h3>
+                <h3 className='text-2xl font-light tracking-tight'>Python + OpenAI</h3>
                 <p className='text-sm text-muted-foreground font-light leading-relaxed'>
-                  Exemplo usando a biblioteca oficial do OpenAI para interceptar chamadas e enviar métricas:
+                  Example using the official OpenAI SDK to intercept calls and send metrics:
                 </p>
                 <CodeBlock code={`import openai
 import requests
@@ -627,9 +629,9 @@ print(response.choices[0].message.content)`} />
 
               {/* Node.js com OpenAI */}
               <div className='space-y-4'>
-                <h3 className='text-2xl font-light tracking-tight'>Node.js com OpenAI</h3>
+                <h3 className='text-2xl font-light tracking-tight'>Node.js + OpenAI</h3>
                 <p className='text-sm text-muted-foreground font-light leading-relaxed'>
-                  Exemplo usando a biblioteca oficial do OpenAI para Node.js:
+                  Example using the official OpenAI SDK for Node.js:
                 </p>
                 <CodeBlock code={`const OpenAI = require('openai');
 const axios = require('axios');
@@ -707,9 +709,9 @@ main();`} />
 
               {/* Python com Anthropic */}
               <div className='space-y-4'>
-                <h3 className='text-2xl font-light tracking-tight'>Python com Anthropic (Claude)</h3>
+                <h3 className='text-2xl font-light tracking-tight'>Python + Anthropic (Claude)</h3>
                 <p className='text-sm text-muted-foreground font-light leading-relaxed'>
-                  Exemplo usando a biblioteca oficial do Anthropic:
+                  Example using the official Anthropic SDK:
                 </p>
                 <CodeBlock code={`import anthropic
 import requests
@@ -784,7 +786,7 @@ print(response.content[0].text)`} />
               <div className='space-y-4'>
                 <h3 className='text-2xl font-light tracking-tight'>n8n (Workflow Automation)</h3>
                 <p className='text-sm text-muted-foreground font-light leading-relaxed'>
-                  Exemplo de workflow no n8n para rastrear uso de LLMs:
+                  Example n8n workflow to track LLM usage:
                 </p>
                 <CodeBlock code={`# Workflow n8n - Passo a passo
 
@@ -900,13 +902,13 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                 <div className='flex gap-3'>
                   <Check className='h-5 w-5 text-primary flex-shrink-0 mt-0.5' />
                   <div className='space-y-2'>
-                    <p className='font-medium text-sm'>Dicas de Integração</p>
+                    <p className='font-medium text-sm'>Integration tips</p>
                     <ul className='text-sm text-muted-foreground font-light space-y-1 list-disc list-inside'>
-                      <li>Envie métricas de forma assíncrona para não bloquear suas respostas ao usuário</li>
-                      <li>Use <code className='px-1 py-0.5 bg-muted rounded text-xs'>feature</code> para categorizar por funcionalidade (chat, embedding, etc.)</li>
-                      <li>Use <code className='px-1 py-0.5 bg-muted rounded text-xs'>tags</code> para filtrar por ambiente (production, staging, test)</li>
-                      <li>Mantenha a API Key segura usando variáveis de ambiente</li>
-                      <li>Trate erros de forma silenciosa para não impactar a experiência do usuário</li>
+                      <li>Send metrics asynchronously to avoid blocking user responses</li>
+                      <li>Use <code className='px-1 py-0.5 bg-muted rounded text-xs'>feature</code> to categorize by functionality (chat, embeddings, etc.)</li>
+                      <li>Use <code className='px-1 py-0.5 bg-muted rounded text-xs'>tags</code> to filter by environment (production, staging, test)</li>
+                      <li>Keep your API key safe using environment variables</li>
+                      <li>Handle errors silently to avoid impacting the user experience</li>
                     </ul>
                   </div>
                 </div>
@@ -918,18 +920,18 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
           <section id='modelos-aceitos' className='space-y-8 border-b pb-16 scroll-mt-24'>
             <div className='flex items-center gap-3'>
               <Database className='h-6 w-6 text-primary' />
-              <h2 className='text-3xl font-light tracking-tight'>Modelos Aceitos</h2>
+              <h2 className='text-3xl font-light tracking-tight'>Supported models</h2>
             </div>
             
             <div className='space-y-6'>
               <p className='text-muted-foreground font-light leading-relaxed'>
-                Nossa API suporta uma ampla gama de modelos LLM de diferentes provedores. Os custos são calculados automaticamente baseados nos preços mais recentes de cada modelo.
+                Our API supports a broad range of LLM models across providers. Costs are computed automatically using the most up-to-date pricing for each model.
               </p>
 
               {loadingPrices ? (
                 <div className='flex items-center justify-center py-12'>
                   <Loader2 className='h-6 w-6 animate-spin text-primary' />
-                  <span className='ml-3 text-sm text-muted-foreground font-light'>Carregando modelos...</span>
+                  <span className='ml-3 text-sm text-muted-foreground font-light'>Loading models...</span>
                 </div>
               ) : pricesError ? (
                 <div className='rounded-lg border-l-4 border-amber-500 bg-amber-500/10 p-6'>
@@ -942,7 +944,7 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                 <div className='space-y-8'>
                   <div className='flex items-center justify-between'>
                     <p className='text-sm text-muted-foreground font-light'>
-                      Total de <strong className='text-foreground'>{validPrices.length}</strong> modelos disponíveis
+                      Total of <strong className='text-foreground'>{validPrices.length}</strong> models available
                     </p>
                   </div>
                   
@@ -957,9 +959,9 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                               <table className='w-full border-collapse'>
                                 <thead className='bg-muted/50'>
                                   <tr className='border-b'>
-                                    <th className='text-left p-4 text-sm font-medium'>Modelo</th>
-                                    <th className='text-left p-4 text-sm font-medium'>Input (por 1M)</th>
-                                    <th className='text-left p-4 text-sm font-medium'>Output (por 1M)</th>
+                                    <th className='text-left p-4 text-sm font-medium'>Model</th>
+                                    <th className='text-left p-4 text-sm font-medium'>Input (per 1M)</th>
+                                    <th className='text-left p-4 text-sm font-medium'>Output (per 1M)</th>
                                   </tr>
                                 </thead>
                                 <tbody className='text-sm'>
@@ -990,7 +992,7 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                                   ) : (
                                     <tr>
                                       <td colSpan={3} className='p-4 text-center text-sm text-muted-foreground font-light'>
-                                        Nenhum modelo encontrado para este provedor.
+                                        No models found for this provider.
                                       </td>
                                     </tr>
                                   )}
@@ -999,7 +1001,7 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                             </div>
                             {models.length > 10 && (
                               <p className='text-xs text-muted-foreground font-light'>
-                                Mostrando 10 de {models.length} modelos de {provider}.
+                                Showing 10 of {models.length} models for {provider}.
                               </p>
                             )}
                           </div>
@@ -1009,10 +1011,10 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                         <div className='flex gap-3'>
                           <Check className='h-5 w-5 text-primary flex-shrink-0 mt-0.5' />
                           <div className='space-y-2'>
-                            <p className='font-medium text-sm'>Preços atualizados</p>
+                            <p className='font-medium text-sm'>Up-to-date pricing</p>
                             <p className='text-sm text-muted-foreground font-light'>
-                              Os preços são atualizados automaticamente e sempre refletem os valores mais recentes de cada provedor. 
-                              Todos os valores são por 1 milhão de tokens (per 1M tokens).
+                              Prices are updated automatically and always reflect the latest values from each provider.
+                              All values are per 1 million tokens (per 1M tokens).
                             </p>
                           </div>
                         </div>
@@ -1023,9 +1025,9 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                       <div className='flex gap-3'>
                         <AlertCircle className='h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5' />
                         <div className='space-y-1'>
-                          <p className='font-medium text-sm'>Nenhum modelo válido encontrado</p>
+                          <p className='font-medium text-sm'>No valid models found</p>
                           <p className='text-sm text-muted-foreground font-light'>
-                            {prices.length} modelos foram carregados, mas nenhum passou na validação. Verifique se os modelos têm provider e model válidos.
+                            {prices.length} models were loaded, but none passed validation. Please verify models have valid provider and model fields.
                           </p>
                         </div>
                       </div>
@@ -1037,9 +1039,9 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                   <div className='flex gap-3'>
                     <AlertCircle className='h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5' />
                     <div className='space-y-1'>
-                      <p className='font-medium text-sm'>Nenhum modelo disponível</p>
+                      <p className='font-medium text-sm'>No models available</p>
                       <p className='text-sm text-muted-foreground font-light'>
-                        {pricesError || 'Não foi possível carregar os modelos no momento.'}
+                        {pricesError || "We couldn't load models right now."}
                       </p>
                     </div>
                   </div>
@@ -1052,7 +1054,7 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
           <section id='tratamento-erros' className='space-y-8 border-b pb-16 scroll-mt-24'>
             <div className='flex items-center gap-3'>
               <AlertCircle className='h-6 w-6 text-primary' />
-              <h2 className='text-3xl font-light tracking-tight'>Tratamento de Erros</h2>
+              <h2 className='text-3xl font-light tracking-tight'>Error handling</h2>
             </div>
             
             <div className='space-y-6'>
@@ -1060,17 +1062,17 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                 {
                   status: '401',
                   title: 'Unauthorized',
-                  description: 'API key não fornecida, inválida ou expirada. Verifique se a key está ativa e corretamente enviada no header.',
+                  description: 'API key missing, invalid, or expired. Verify the key is active and properly sent in the request headers.',
                 },
                 {
                   status: '404',
                   title: 'Not Found',
-                  description: 'Provider, model ou preço não encontrado. Verifique se os nomes estão corretos e se o modelo possui preços cadastrados.',
+                  description: 'Provider, model, or price not found. Verify names are correct and the model has pricing configured.',
                 },
                 {
                   status: '400',
                   title: 'Bad Request',
-                  description: 'Validação falhou. Verifique campos obrigatórios, tipos de dados e se tokens são números >= 0.',
+                  description: 'Validation failed. Check required fields, data types, and ensure tokens are numbers >= 0.',
                 },
               ].map((error, i) => (
                 <div key={i} className='group space-y-2 p-6 rounded-lg hover:bg-muted/50 transition-colors border-l-4 border-primary/20'>
@@ -1083,7 +1085,7 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
               ))}
               
               <div className='space-y-4'>
-                <h3 className='text-lg font-medium'>Exemplo de erro</h3>
+                <h3 className='text-lg font-medium'>Error example</h3>
                 <CodeBlock code={`{
   "success": false,
   "error": "API key not found or invalid",
@@ -1096,13 +1098,13 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
 
           {/* Campos Opcionais - Minimalista */}
           <section id='campos-opcionais' className='space-y-8 border-b pb-16 scroll-mt-24'>
-            <h2 className='text-3xl font-light tracking-tight'>Campos Opcionais</h2>
+            <h2 className='text-3xl font-light tracking-tight'>Optional fields</h2>
             
             <div className='grid sm:grid-cols-2 gap-6'>
               <div className='group space-y-4 p-6 rounded-lg hover:bg-muted/50 transition-colors border'>
                 <h3 className='text-lg font-medium group-hover:text-primary transition-colors'>Feature</h3>
                 <p className='text-sm text-muted-foreground font-light leading-relaxed'>
-                  Campo livre para descrever a funcionalidade do uso:
+                  Free-form field to describe the functionality:
                 </p>
                 <div className='flex flex-wrap gap-2'>
                   {['chat', 'completion', 'embedding', 'fine-tuning', 'translation'].map((feat) => (
@@ -1114,7 +1116,7 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
               <div className='group space-y-4 p-6 rounded-lg hover:bg-muted/50 transition-colors border'>
                 <h3 className='text-lg font-medium group-hover:text-primary transition-colors'>Tags</h3>
                 <p className='text-sm text-muted-foreground font-light leading-relaxed'>
-                  Array de strings para categorização e filtragem:
+                  Array of strings for categorization and filtering:
                 </p>
                 <CodeBlock code={`["production", "user-request"]
 ["staging", "test"]
@@ -1126,14 +1128,14 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
           {/* CTA - Minimalista */}
           <section className='text-center space-y-8 py-16'>
             <h2 className='text-3xl font-light tracking-tight'>
-              Pronto para começar?
+              Ready to get started?
             </h2>
             <p className='text-muted-foreground font-light'>
-              Crie sua conta grátis e comece a rastrear seus custos de LLM em minutos.
+              Create a free account and start tracking LLM costs in minutes.
             </p>
             <Button asChild size='lg' className='px-8 py-6 text-base font-normal h-auto rounded-full hover:scale-105 transition-transform duration-300'>
               <Link to='/sign-up'>
-                Criar conta grátis
+                Create a free account
                 <ArrowRight className='ml-2 h-4 w-4' />
               </Link>
             </Button>
@@ -1152,10 +1154,10 @@ response = chat_completion([{'role': 'user', 'content': 'Hello!'}])`} />
                 Landing
               </Link>
               <Link to='/documentation' className='hover:text-foreground transition-colors'>
-                Documentação
+                Documentation
               </Link>
               <Link to='/sign-in' className='hover:text-foreground transition-colors'>
-                Entrar
+                Sign in
               </Link>
             </div>
           </div>
