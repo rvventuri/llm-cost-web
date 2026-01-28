@@ -153,6 +153,12 @@ export function Landing() {
             {/* Navigation */}
             <nav className='flex items-center gap-4'>
               <Link
+                to={'/blog' as any}
+                className='text-sm text-muted-foreground hover:text-foreground transition-colors font-light'
+              >
+                Blog
+              </Link>
+              <Link
                 to={'/documentation' as any}
                 className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-light'
               >
