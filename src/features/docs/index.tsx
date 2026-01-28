@@ -244,7 +244,7 @@ func main() {
             
             <nav className='flex items-center gap-4'>
               <Link
-                to='/documentation'
+                to={'/documentation' as any}
                 className='flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors font-light'
               >
                 <BookOpen className='h-4 w-4' />

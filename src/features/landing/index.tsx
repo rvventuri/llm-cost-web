@@ -153,7 +153,7 @@ export function Landing() {
             {/* Navigation */}
             <nav className='flex items-center gap-4'>
               <Link
-                to='/documentation'
+                to={'/documentation' as any}
                 className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-light'
               >
                 <BookOpen className='h-4 w-4' />
